@@ -4,7 +4,6 @@ import 'package:messenger_clone/helper/constants.dart';
 import 'package:messenger_clone/helper/helperfunctions.dart';
 import 'package:messenger_clone/screens/conversation_screen.dart';
 import 'package:messenger_clone/screens/profileScreen.dart';
-import 'package:messenger_clone/screens/search_user.dart';
 import 'package:messenger_clone/services/Auth.dart';
 import 'package:messenger_clone/services/database.dart';
 import 'package:messenger_clone/widgets/appbar_widget.dart';
@@ -12,11 +11,11 @@ import 'package:messenger_clone/widgets/category_selector.dart';
 import 'package:messenger_clone/widgets/favContacts_widget.dart';
 import '../helper/string_extension.dart';
 
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
 
   Stream chatRooms;
@@ -43,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
 
   Widget favContacts() {
     return StreamBuilder(

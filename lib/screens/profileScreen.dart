@@ -9,8 +9,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-  /// create a bottom drawer controller to control the drawer.
   BottomDrawerController controller = BottomDrawerController();
 
   @override

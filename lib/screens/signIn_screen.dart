@@ -94,47 +94,36 @@ class _SignInState extends State<SignIn> {
                   key: formKey,
                   child: Column(
                     children: [
-                      Material(
-                        elevation: 2.0,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                          child: TextFormField(
-                            validator: (val){
-                              return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                              null : "Enter correct email";
-                            },
-                            controller: emailEditingController,
-                            decoration:
-                            InputDecoration(
-                                border: InputBorder.none,
-                                icon: Icon(
-                                  Icons.mail,
-                                  color: Colors.grey,
-                                ),
-                                hintText: 'Email'),
-                          ),
-                        ),
+                      TextFormField(
+                        validator: (val){
+                          return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                          null : "Enter correct email";
+                        },
+                        controller: emailEditingController,
+                        decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                      ),
+                      labelText: 'Email',labelStyle: TextStyle(color: Colors.black45)),
                       ),
                       SizedBox(height: 20.0),
-                      Material(
-                        elevation: 2.0,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                          child: TextFormField(
-                            validator:  (val){
-                              return val.length < 6 ? "Enter Password 6+ characters" : null;
-                            },
-                            controller: passwordEditingController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                icon: Icon(
-                                  Icons.lock,
-                                  color: Colors.grey,
-                                ),
-                                hintText: 'Password'),
-                          ),
-                        ),
+                      TextFormField(
+                        validator:  (val){
+                          return val.length < 6 ? "Enter Password 6+ characters" : null;
+                        },
+                        controller: passwordEditingController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                            ),
+                            labelText: 'Password',labelStyle: TextStyle(color: Colors.black45)),
                       ),
                     ],
                   ),

@@ -6,6 +6,7 @@ import 'package:messenger_clone/screens/signIn_screen.dart';
 
 import 'package:messenger_clone/services/Auth.dart';
 import 'package:messenger_clone/services/database.dart';
+import 'package:intl/intl.dart';
 
 
 class SignUp extends StatefulWidget {
@@ -16,12 +17,25 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
-String checkpassword(String C){
 
-}
 class _SignUpState extends State<SignUp> {
 
-  TextEditingController userNameEditingController = new TextEditingController();
+  // DateTime selectedDate;
+  //
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: selectedDate,
+  //       firstDate: DateTime(2015, 8),
+  //       lastDate: DateTime(2101));
+  //   if (picked != null && picked != selectedDate)
+  //     setState(() {
+  //       selectedDate = picked;
+  //     });
+  // }
+
+  TextEditingController userFirstNameEditingController = new TextEditingController();
+  TextEditingController userSecondNameEditingController = new TextEditingController();
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
 
@@ -29,24 +43,24 @@ class _SignUpState extends State<SignUp> {
 
   bool isLoading = false;
 
+  String _chosenValue;
+
 
   AuthService authService = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
-
   HelperFunctions helperFunctions = new HelperFunctions();
 
   signUp() async {
-
     if(formKey.currentState.validate()){
       Map<String,String> userDataMap = {
         "pass" : passwordEditingController.text,
-        "userName" : userNameEditingController.text.toLowerCase(),
+        "userName" : userFirstNameEditingController.text.toLowerCase()+ userSecondNameEditingController.text.toLowerCase(),
         "userEmail" : emailEditingController.text.toLowerCase()
       };
 
       HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
       HelperFunctions.saveUserEmailSharedPreference(passwordEditingController.text);
-      HelperFunctions.saveUserEmailSharedPreference(userNameEditingController.text);
+      HelperFunctions.saveUserEmailSharedPreference(userFirstNameEditingController.text);
 
       setState(() {
         isLoading = true;
@@ -66,6 +80,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    //String _formatDate = new DateFormat.yMMMd().format(_dateTime);
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
       body: isLoading? Container(
@@ -73,7 +88,7 @@ class _SignUpState extends State<SignUp> {
       ):
       SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 200, 10, 10),
+          padding: EdgeInsets.fromLTRB(15, 100, 15, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -85,71 +100,209 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.black,
                 ),
               ),
+              SizedBox(height: 30.0,),
               Form(
                 key: formKey,
                 child: Column(
                   children: [
                     SizedBox(height: 10),
-                    Material(
-                      elevation: 2.0,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                        child: TextFormField(
-                          validator: (val){
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: TextFormField(
+                            validator: (val){
                             return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
                           },
-                          controller: userNameEditingController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.account_circle_outlined,
-                                color: Colors.grey,
-                              ),
-                              hintText: 'Name'),
+                            controller: userFirstNameEditingController,
+                            decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                                ),
+                                labelText: 'First Name',labelStyle: TextStyle(color: Colors.black45)),
+                          ),
+                        ),
+                        SizedBox(width: 20.0,),
+                        Flexible(
+                          child: TextFormField(
+                            validator: (val){
+                              return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
+                            },
+                            controller: userSecondNameEditingController,
+                            decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                                ),
+                               labelText: 'Sur Name',labelStyle: TextStyle(color: Colors.black45)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      validator: (val){
+                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                        null : "Enter correct email";
+                      },
+                      controller: emailEditingController,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          ),
+                          labelText: 'Contact No.',labelStyle: TextStyle(color: Colors.black45)),
+                    ),
+                    //SizedBox(height: 20.0),
+                    //Text(_formatDate == null? "Nothing": _formatDate.toString()),
+
+                    // Text("${selectedDate.toLocal()}".split(' ')[0]),
+                    // SizedBox(height: 20.0,),
+                    // ElevatedButton(
+                    //   onPressed: () => _selectDate(context),
+                    //   child: Text('Select date'),
+                    // ),
+
+                    // ElevatedButton(
+                    //     onPressed: (){
+                    //       showDatePicker(context: context,
+                    //           initialDate: _formatDate == null? DateTime.now(): _formatDate,
+                    //           firstDate: DateTime(2001),
+                    //           lastDate: DateTime(2222)
+                    //       ).then((date) {
+                    //         setState(() {
+                    //           _formatDate = date as String;
+                    //         });
+                    //       });
+                    //     },
+                    //     child: Text("Pick a date")
+                    // ),
+                    // TextFormField(
+                    //   onTap: () => _selectDate(context),
+                    //   validator: (val){
+                    //     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                    //     null : "Enter correct email";
+                    //   },
+                    //   controller: emailEditingController,
+                    //   decoration: InputDecoration(
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                    //       ),
+                    //       enabledBorder: OutlineInputBorder(
+                    //         borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                    //       ),
+                    //       labelText: 'BirthDate',labelStyle: TextStyle(color: Colors.black45)),
+                    // ),
+                    SizedBox(height: 20.0),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          border: Border.all(color: Colors.black45)
+                      ),
+                      width: MediaQuery.of(context).size.width ,
+                      height: MediaQuery.of(context).size.height/15,
+                      child:  Padding(
+                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                        child: DropdownButtonFormField<String>(
+                          focusColor:Colors.white,
+                          value: _chosenValue,
+                          elevation: 0,
+                          decoration: InputDecoration.collapsed(hintText: ''),
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor:Colors.black,
+                          items: <String>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-',].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,style:TextStyle(color:Colors.black),),
+                            );
+                          }).toList(),
+                          hint:Text(
+                            "Blood Group",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenValue = value;
+                            });
+                          },
                         ),
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Material(
-                      elevation: 2.0,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                        child: TextFormField(
-                          validator: (val){
-                            return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                            null : "Enter correct email";
-                          },
-                          controller: emailEditingController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.mail,
-                                color: Colors.grey,
-                              ),
-                              hintText: 'Email'),
-                        ),
-                      ),
+                    TextFormField(
+                      validator: (val){
+                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                        null : "Enter correct email";
+                      },
+                      controller: emailEditingController,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          ),
+                          labelText: 'BloodGroup',labelStyle: TextStyle(color: Colors.black45)),
                     ),
                     SizedBox(height: 20.0),
-                    Material(
-                      elevation: 2.0,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                        child: TextFormField(
-                          validator:  (val){
-                            return val.length < 6 ? "Enter Password 6+ characters" : null;
-                          },
-                          controller: passwordEditingController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.lock,
-                                color: Colors.grey,
-                              ),
-                              hintText: 'Password'),
-                        ),
-                      ),
+                    TextFormField(
+                      validator: (val){
+                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                        null : "Enter correct email";
+                      },
+                      controller: emailEditingController,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          ),
+                          labelText: 'Email',labelStyle: TextStyle(color: Colors.black45)),
+                    ),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      validator: (val){
+                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                        null : "Enter correct email";
+                      },
+                      controller: emailEditingController,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          ),
+                          labelText: 'Password',labelStyle: TextStyle(color: Colors.black45)),
+                    ),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      validator:  (val){
+                        return val.length < 6 ? "Enter Password 6+ characters" : null;
+                      },
+                      controller: passwordEditingController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          ),
+                          labelText: 'Confirm Password',labelStyle: TextStyle(color: Colors.black45)),
                     ),
                   ],
                 ),
