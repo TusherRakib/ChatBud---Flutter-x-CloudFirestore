@@ -16,7 +16,9 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
+String checkpassword(String C){
 
+}
 class _SignUpState extends State<SignUp> {
 
   TextEditingController userNameEditingController = new TextEditingController();
@@ -53,9 +55,7 @@ class _SignUpState extends State<SignUp> {
       await authService.signUpWithEmailAndPassword(emailEditingController.text.toLowerCase(),
           passwordEditingController.text.toLowerCase()).then((result){
             print("$result");
-
             databaseMethods.uploadUserInfo(userDataMap);
-
             Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) => Authenticate()
             ));
@@ -157,7 +157,6 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height: 30.0),
               GestureDetector(
                 onTap: (){
-                  print("======================================Signup Pressed");
                   signUp();
                 },
                 child: Container(

@@ -65,11 +65,11 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: isLoading
-          ? Container(
+      body: isLoading?
+      Container(
         child: Center(child: CircularProgressIndicator()),
-      )
-          : Center(
+      ):
+      Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 130, 10, 10),
@@ -104,7 +104,8 @@ class _SignInState extends State<SignIn> {
                               null : "Enter correct email";
                             },
                             controller: emailEditingController,
-                            decoration: InputDecoration(
+                            decoration:
+                            InputDecoration(
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.mail,
@@ -114,23 +115,6 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                      //   child: TextFormField(
-                      //     validator: (val){
-                      //       return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                      //       null : "Enter correct email";
-                      //     },
-                      //     controller: emailEditingController,
-                      //     decoration: InputDecoration(
-                      //         border: InputBorder.none,
-                      //         icon: Icon(
-                      //           Icons.mail,
-                      //           color: Colors.grey,
-                      //         ),
-                      //         hintText: 'Email'),
-                      //   ),
-                      // ),
                       SizedBox(height: 20.0),
                       Material(
                         elevation: 2.0,
@@ -152,24 +136,6 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                      //   child: TextFormField(
-                      //     validator:  (val){
-                      //       return val.length < 6 ? "Enter Password 6+ characters" : null;
-                      //     },
-                      //
-                      //     controller: passwordEditingController,
-                      //     obscureText: true,
-                      //     decoration: InputDecoration(
-                      //         border: InputBorder.none,
-                      //         icon: Icon(
-                      //           Icons.lock,
-                      //           color: Colors.grey,
-                      //         ),
-                      //         hintText: 'Password'),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -178,7 +144,6 @@ class _SignInState extends State<SignIn> {
 
                 GestureDetector(
                   onTap: () {
-                    print("======================================SignIn Pressed");
                     signIn();
                   },
                   child: Container(
@@ -246,7 +211,6 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

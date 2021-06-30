@@ -3,9 +3,11 @@ import 'package:messenger_clone/helper/authenticate.dart';
 import 'package:messenger_clone/helper/constants.dart';
 import 'package:messenger_clone/helper/helperfunctions.dart';
 import 'package:messenger_clone/screens/conversation_screen.dart';
+import 'package:messenger_clone/screens/profileScreen.dart';
 import 'package:messenger_clone/screens/search_user.dart';
 import 'package:messenger_clone/services/Auth.dart';
 import 'package:messenger_clone/services/database.dart';
+import 'package:messenger_clone/widgets/appbar_widget.dart';
 import 'package:messenger_clone/widgets/category_selector.dart';
 import 'package:messenger_clone/widgets/favContacts_widget.dart';
 import '../helper/string_extension.dart';
@@ -23,17 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
       stream: chatRooms,
       builder: (context, snapshot) {
         return snapshot.hasData
-            ? Expanded(
-              child: ListView.builder(
-                  itemCount: snapshot.data.documents.length, 
-                  shrinkWrap: true, 
-                  itemBuilder: (context, index) {
-                    return ChatRoomsTile(
-                      userName: snapshot.data.documents[index].data['chatRoomId'].toString().replaceAll("_", "").replaceAll(Constants.myName, ""), 
-                      chatRoomId: snapshot.data.documents[index].data["chatRoomId"],
-                    );
-                  }),
-        ) :
+            ? ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ChatRoomsTile(
+                    userName: snapshot.data.documents[index].data['chatRoomId'].toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+                    chatRoomId: snapshot.data.documents[index].data["chatRoomId"],
+                  );
+                }) :
         Container(
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0,left: 20.0),
@@ -48,18 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder(
       stream: chatRooms,
       builder: (context, snapshot) {
-        return snapshot.hasData ? Expanded(
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data.documents.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return FavContacts(
-                  userName: snapshot.data.documents[index].data['chatRoomId'].toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
-                  chatRoomId: snapshot.data.documents[index].data["chatRoomId"],
-                );
-              }),
-        ) :
+        return snapshot.hasData ? ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data.documents.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return FavContacts(
+                userName: snapshot.data.documents[index].data['chatRoomId'].toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+                chatRoomId: snapshot.data.documents[index].data["chatRoomId"],
+              );
+            }) :
         Container(
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0,left: 20.0),
@@ -88,103 +86,86 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          iconSize: 30.0,
-          color: Colors.white,
-          onPressed: (){},
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 50.0),
-          child: Center(
-          child: Text('Chat App',
-            style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-      ),
-        ),
-        elevation: 0.0,
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            iconSize: 30.0,
+      appBar:appBarMain(context),
+      body: Container(
+        decoration: BoxDecoration(
             color: Colors.white,
-            onPressed: (){
-              Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SearchUser()));
-              },
-          ),
-          GestureDetector(
-            onTap: () {
-              AuthService().signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.exit_to_app)),
-          )
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 100.0,
-            child:
-          ),
-         // CategorySelector(),
-          Padding(
-            padding: const EdgeInsets.only(top: 300.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight: Radius.circular(30.0))
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight: Radius.circular(30.0))
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget> [
+            CategorySelector(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget> [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget> [
-                        Text('Favorite Contacts ',
-                          style: TextStyle(color: Colors.blueGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),),
-                        IconButton(
-                          onPressed: (){},
-                          icon:
-                          Icon(Icons.more_horiz),
-                          iconSize: 30.0,
-                          color: Colors.blueGrey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                      height: 120.0,
-                      child: favContacts()
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Recent Chats ',
-                      style: TextStyle(color: Colors.blueGrey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0),),
-                  ),
-                  recentChats(),
-                  //RecentChats(),
+                  Text('Favorite Contacts ',
+                    style: TextStyle(color: Colors.blueGrey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0),),
+                  IconButton(
+                    onPressed: (){},
+                    icon:
+                    Icon(Icons.more_horiz),
+                    iconSize: 30.0,
+                    color: Colors.blueGrey,
+                  )
                 ],
               ),
             ),
-          ),
-        ],
+            Container(
+                height: 120.0,
+                child: favContacts()
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text('Recent Chats ',
+                style: TextStyle(color: Colors.blueGrey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0),),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: recentChats(),
+              ),
+            ),
+            //RecentChats(),
+          ],
+        ),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+              ),
+              child: Image(image: AssetImage('images/Screenshot_7.png')),
+            ),
+            ListTile(
+              title: Text('Profile',style: TextStyle(fontSize: 18.0,fontFamily: 'OverpassRegular'),),
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+              },
+            ),
+            ListTile(
+              title: Text('Sign Out',style: TextStyle(fontSize: 18.0,fontFamily: 'OverpassRegular'),),
+              onTap: () {
+                AuthService().signOut();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Authenticate()));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
