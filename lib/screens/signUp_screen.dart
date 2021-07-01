@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_clone/helper/authenticate.dart';
 import 'package:messenger_clone/helper/helperfunctions.dart';
-import 'package:messenger_clone/screens/chatroom_screen.dart';
-import 'package:messenger_clone/screens/signIn_screen.dart';
-
 import 'package:messenger_clone/services/Auth.dart';
 import 'package:messenger_clone/services/database.dart';
-import 'package:intl/intl.dart';
+
 
 
 class SignUp extends StatefulWidget {
@@ -20,31 +17,22 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-  // DateTime selectedDate;
-  //
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: selectedDate,
-  //       firstDate: DateTime(2015, 8),
-  //       lastDate: DateTime(2101));
-  //   if (picked != null && picked != selectedDate)
-  //     setState(() {
-  //       selectedDate = picked;
-  //     });
-  // }
-
   TextEditingController userFirstNameEditingController = new TextEditingController();
   TextEditingController userSecondNameEditingController = new TextEditingController();
+  TextEditingController contactNoEditingController = new TextEditingController();
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
+  TextEditingController confirmPasswordEditingController = new TextEditingController();
+ // TextEditingController userNameEditingController = new TextEditingController();
+
 
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
-  String _chosenValue;
-
+  String _chosenBloodGroup;
+  String _chosenArea;
+  String _chosenCity;
 
   AuthService authService = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
@@ -54,7 +42,13 @@ class _SignUpState extends State<SignUp> {
     if(formKey.currentState.validate()){
       Map<String,String> userDataMap = {
         "pass" : passwordEditingController.text,
-        "userName" : userFirstNameEditingController.text.toLowerCase()+ userSecondNameEditingController.text.toLowerCase(),
+        "userName": userFirstNameEditingController.text.toLowerCase() +  userSecondNameEditingController.text.toLowerCase(),
+        "FirstName" : userFirstNameEditingController.text.toLowerCase(),
+        "SecondName" : userSecondNameEditingController.text.toLowerCase(),
+        "ContactNo" : contactNoEditingController.text,
+        "BloodGroup" : _chosenBloodGroup.toString(),
+        "Area" : _chosenArea.toString(),
+        "City" : _chosenCity.toString(),
         "userEmail" : emailEditingController.text.toLowerCase()
       };
 
@@ -68,12 +62,10 @@ class _SignUpState extends State<SignUp> {
 
       await authService.signUpWithEmailAndPassword(emailEditingController.text.toLowerCase(),
           passwordEditingController.text.toLowerCase()).then((result){
-            print("$result");
             databaseMethods.uploadUserInfo(userDataMap);
             Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) => Authenticate()
             ));
-      //   }
        });
     }
   }
@@ -113,7 +105,7 @@ class _SignUpState extends State<SignUp> {
                         Flexible(
                           child: TextFormField(
                             validator: (val){
-                            return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
+                            return val.isEmpty || val.length < 3 ? "Enter First Name 3+ characters" : null;
                           },
                             controller: userFirstNameEditingController,
                             decoration: InputDecoration(
@@ -130,7 +122,7 @@ class _SignUpState extends State<SignUp> {
                         Flexible(
                           child: TextFormField(
                             validator: (val){
-                              return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
+                              return val.isEmpty || val.length < 3 ? "Enter Sur Name 3+ characters" : null;
                             },
                             controller: userSecondNameEditingController,
                             decoration: InputDecoration(
@@ -148,10 +140,9 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       validator: (val){
-                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                        null : "Enter correct email";
+                        return val.isEmpty || val.length < 11 ? "Contact No. is Incorrect" : null;
                       },
-                      controller: emailEditingController,
+                      controller: contactNoEditingController,
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black45, width: 2.0),
@@ -161,46 +152,6 @@ class _SignUpState extends State<SignUp> {
                           ),
                           labelText: 'Contact No.',labelStyle: TextStyle(color: Colors.black45)),
                     ),
-                    //SizedBox(height: 20.0),
-                    //Text(_formatDate == null? "Nothing": _formatDate.toString()),
-
-                    // Text("${selectedDate.toLocal()}".split(' ')[0]),
-                    // SizedBox(height: 20.0,),
-                    // ElevatedButton(
-                    //   onPressed: () => _selectDate(context),
-                    //   child: Text('Select date'),
-                    // ),
-
-                    // ElevatedButton(
-                    //     onPressed: (){
-                    //       showDatePicker(context: context,
-                    //           initialDate: _formatDate == null? DateTime.now(): _formatDate,
-                    //           firstDate: DateTime(2001),
-                    //           lastDate: DateTime(2222)
-                    //       ).then((date) {
-                    //         setState(() {
-                    //           _formatDate = date as String;
-                    //         });
-                    //       });
-                    //     },
-                    //     child: Text("Pick a date")
-                    // ),
-                    // TextFormField(
-                    //   onTap: () => _selectDate(context),
-                    //   validator: (val){
-                    //     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                    //     null : "Enter correct email";
-                    //   },
-                    //   controller: emailEditingController,
-                    //   decoration: InputDecoration(
-                    //       focusedBorder: OutlineInputBorder(
-                    //         borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                    //       ),
-                    //       labelText: 'BirthDate',labelStyle: TextStyle(color: Colors.black45)),
-                    // ),
                     SizedBox(height: 20.0),
 
                     Container(
@@ -214,7 +165,7 @@ class _SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.only(left: 10.0,top: 17.0),
                         child: DropdownButtonFormField<String>(
                           focusColor:Colors.white,
-                          value: _chosenValue,
+                          value: _chosenBloodGroup,
                           elevation: 0,
                           decoration: InputDecoration.collapsed(hintText: ''),
                           style: TextStyle(color: Colors.white),
@@ -234,27 +185,87 @@ class _SignUpState extends State<SignUp> {
                           ),
                           onChanged: (String value) {
                             setState(() {
-                              _chosenValue = value;
+                              _chosenBloodGroup = value;
                             });
                           },
                         ),
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    TextFormField(
-                      validator: (val){
-                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                        null : "Enter correct email";
-                      },
-                      controller: emailEditingController,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          border: Border.all(color: Colors.black45)
+                      ),
+                      width: MediaQuery.of(context).size.width ,
+                      height: MediaQuery.of(context).size.height/15,
+                      child:  Padding(
+                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                        child: DropdownButtonFormField<String>(
+                          focusColor:Colors.white,
+                          value: _chosenArea,
+                          elevation: 0,
+                          decoration: InputDecoration.collapsed(hintText: ''),
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor:Colors.black,
+                          items: <String>['Shantinagar', 'Khilgaon', 'Jatrabari', 'Bashundhara', 'Gulshan', 'Mirpur', 'Mohammadpur', 'Farmgate',].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,style:TextStyle(color:Colors.black),),
+                            );
+                          }).toList(),
+                          hint:Text(
+                            "Choose Area",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenArea = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          border: Border.all(color: Colors.black45)
+                      ),
+                      width: MediaQuery.of(context).size.width ,
+                      height: MediaQuery.of(context).size.height/15,
+                      child:  Padding(
+                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                        child: DropdownButtonFormField<String>(
+                          focusColor:Colors.white,
+                          value: _chosenCity,
+                          elevation: 0,
+                          decoration: InputDecoration.collapsed(hintText: ''),
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor:Colors.black,
+                          items: <String>['Dhaka',].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,style:TextStyle(color:Colors.black),),
+                            );
+                          }).toList(),
+                          hint:Text(
+                            "Choose City",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
                           ),
-                          labelText: 'BloodGroup',labelStyle: TextStyle(color: Colors.black45)),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenCity = value;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
@@ -275,10 +286,9 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       validator: (val){
-                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                        null : "Enter correct email";
+                        return val.length < 6 ? "Enter Password 6+ characters" : null;
                       },
-                      controller: emailEditingController,
+                      controller: passwordEditingController,
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black45, width: 2.0),
@@ -291,9 +301,9 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       validator:  (val){
-                        return val.length < 6 ? "Enter Password 6+ characters" : null;
+                        return val.isEmpty? "Cannot be empty": val != passwordEditingController.text ? "Enter Password 6+ characters" : null;
                       },
-                      controller: passwordEditingController,
+                      controller: confirmPasswordEditingController,
                       obscureText: true,
                       decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(

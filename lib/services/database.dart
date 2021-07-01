@@ -26,6 +26,13 @@ class DatabaseMethods {
       print(e.toString());
     });
   }
+  getProfileInfo(String uid) async {
+    return Firestore.instance
+        .collection("users")
+        .document(uid).C
+        .snapshots();
+  }
+
 
   Future<bool> addChatRoom(chatRoom, chatRoomId) {
     Firestore.instance

@@ -7,7 +7,6 @@ import '../helper/string_extension.dart';
 
 
 class SearchUser extends StatefulWidget {
-  //const SearchUser({Key? key}) : super(key: key);
 
   @override
   _SearchUserState createState() => _SearchUserState();

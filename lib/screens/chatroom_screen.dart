@@ -136,9 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
@@ -181,11 +178,7 @@ class ChatRoomsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => Chat(
-              userName: userName,
-              chatRoomId: chatRoomId,
-            )
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(userName: userName, chatRoomId: chatRoomId, )
         ));
       },
       child: Padding(
@@ -217,9 +210,7 @@ class ChatRoomsTile extends StatelessWidget {
                             fontWeight: FontWeight.w300)),
                   ),
                 ),
-                SizedBox(
-                  width: 12,
-                ),
+                SizedBox(width: 12,),
                 Text(userName.capitalize(),
                     textAlign: TextAlign.start,
                     style: TextStyle(

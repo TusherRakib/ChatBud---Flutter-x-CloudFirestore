@@ -1,15 +1,62 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:messenger_clone/helper/constants.dart';
+import 'package:messenger_clone/helper/helperfunctions.dart';
+import 'package:messenger_clone/services/database.dart';
 import 'package:messenger_clone/widgets/appbar_widget.dart';
 import 'package:bottom_drawer/bottom_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
+
+  final String uid;
+  ProfileScreen({this.uid});
+
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  QuerySnapshot userResultSnapshot;
+
+  String UserFirstName;
+  String UserSecondName;
+  String PhoneNumber;
+  String EmailAddress;
+  String BloodGroup;
+  String Area;
+  String city;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  fetchUserData() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    if (firebaseUser != null) {
+      await Firestore.instance
+          .collection("users")
+          .document(firebaseUser.uid)
+          .get()
+          .then((result) {
+        EmailAddress = result.data['userEmail'];
+        UserFirstName = result.data['FirstName'];
+        UserSecondName = result.data['SecondName'];
+        PhoneNumber = result.data['ContactNo'];
+        BloodGroup = result.data['BloodGroup'];
+        Area = result.data['Area'];
+        city = result.data['City'];
+      }).catchError((e) {
+        print(e.toString());
+      });
+    }
+  }
+
   BottomDrawerController controller = BottomDrawerController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.grey[800],
             ),
             Text(
-              'NAME',
+              First,
               style: TextStyle(
                 color: Colors.grey,
                 letterSpacing: 2.0,
