@@ -147,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Image(image: AssetImage('images/Screenshot_7.png')),
             ),
             ListTile(
+              leading: Icon(Icons.person,color: Colors.black45,),
               title: Text('Profile',style: TextStyle(fontSize: 18.0,fontFamily: 'OverpassRegular'),),
               onTap: () {
                 Navigator.pushReplacement(context,
@@ -154,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.keyboard_tab_sharp,color: Colors.black45,),
               title: Text('Sign Out',style: TextStyle(fontSize: 18.0,fontFamily: 'OverpassRegular'),),
               onTap: () {
                 AuthService().signOut();
@@ -211,7 +213,7 @@ class ChatRoomsTile extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12,),
-                Text(userName.capitalize(),
+                Text(userName,
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.black54,

@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.messenger_clone">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="messenger_clone"
+        android:label="ChatBud"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

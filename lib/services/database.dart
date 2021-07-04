@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseMethods {
 
+  final firebaseUser = FirebaseAuth.instance.currentUser();
 
-  searchByName(String searchField) {
-       return Firestore.instance
-           .collection("users")
-           .where('userName', isEqualTo: searchField)
-           .getDocuments();
-     }
-
-  uploadUserInfo(userMap){
-    Firestore.instance.collection("users")
-        .add(userMap).catchError((e){
+  uploadUserInfo(userMap) async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance
+        .collection("users")
+        .document(firebaseUser.uid)
+        .setData(userMap)
+        .catchError((e){
           print(e.toString());
     });
   }
@@ -26,11 +25,20 @@ class DatabaseMethods {
       print(e.toString());
     });
   }
-  getProfileInfo(String uid) async {
+
+  // getUserProfileInfo() async {
+  //   final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  //   Firestore.instance
+  //       .collection("users")
+  //       .document(user.uid)
+  //       .get();
+  // }
+
+  searchByName(String searchField) {
     return Firestore.instance
         .collection("users")
-        .document(uid).C
-        .snapshots();
+        .where('userName', isEqualTo: searchField)
+        .getDocuments();
   }
 
 
@@ -44,6 +52,7 @@ class DatabaseMethods {
     });
   }
   //
+
   getChats(String chatRoomId) async{
     return Firestore.instance
         .collection("chatRoom")

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_clone/helper/authenticate.dart';
 import 'package:messenger_clone/helper/helperfunctions.dart';
@@ -37,6 +38,8 @@ class _SignUpState extends State<SignUp> {
   AuthService authService = new AuthService();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   HelperFunctions helperFunctions = new HelperFunctions();
+  final firebaseUser = FirebaseAuth.instance.currentUser();
+
 
   signUp() async {
     if(formKey.currentState.validate()){
@@ -49,7 +52,7 @@ class _SignUpState extends State<SignUp> {
         "BloodGroup" : _chosenBloodGroup.toString(),
         "Area" : _chosenArea.toString(),
         "City" : _chosenCity.toString(),
-        "userEmail" : emailEditingController.text.toLowerCase()
+        "userEmail" : emailEditingController.text.toLowerCase(),
       };
 
       HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);

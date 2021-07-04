@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:messenger_clone/helper/helperfunctions.dart';
 import 'package:messenger_clone/screens/chatroom_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:messenger_clone/screens/profileScreen.dart';
 import 'package:messenger_clone/services/Auth.dart';
 import 'package:messenger_clone/services/database.dart';
 

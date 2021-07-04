@@ -27,7 +27,6 @@ class _ChatState extends State<Chat> {
 
   Widget chatMessages(){
     return StreamBuilder(
-
       stream: chats,
       builder: (context, snapshot){
         SchedulerBinding.instance.addPostFrameCallback((time) {_scrollController.jumpTo(_scrollController.position.maxScrollExtent); });
