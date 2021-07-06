@@ -3,13 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_clone/screens/chatroom_screen.dart';
 import 'package:messenger_clone/screens/editProfile_screen.dart';
+import 'package:messenger_clone/services/database.dart';
 import '../helper/string_extension.dart';
 
 class ProfileScreen extends StatefulWidget {
-
-  String profilePic;
-
-  ProfileScreen({this.profilePic});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -25,8 +22,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String BloodGroup = "";
   String Area = "";
   String city = "";
+  String ProfilePic = "";
+  String emptyPhoto = "https://pngtree.com/freepng/profile-line-black-icon_4008141.html";
 
   bool isLoading = false;
+
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   @override
   void initState(){
@@ -35,17 +36,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getUsersById() async {
-
     setState(() {
       isLoading = true;
     });
 
     final firebaseUser = await FirebaseAuth.instance.currentUser();
      if( firebaseUser !=null ){
-       await Firestore.instance
-           .collection("users")
-           .document(firebaseUser.uid)
-           .get().then((DocumentSnapshot result){
+       print("================================FIREBASE USER IS NOT NULL");
+       await databaseMethods.getUserProfileInfo().then((result){
          EmailAddress = result.data['userEmail'];
          UserFirstName = result.data['FirstName'];
          UserSecondName = result.data['SecondName'];
@@ -53,15 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
          BloodGroup = result.data['BloodGroup'];
          Area = result.data['Area'];
          city = result.data['City'];
-
-         print(EmailAddress);
-         print(UserFirstName);
-         print(UserSecondName);
-         print(PhoneNumber);
-         print(BloodGroup);
-         print(Area);
-         print(city);
-
+         ProfilePic = result.data['userProfilePhoto'];
          setState(() {
            isLoading = false;
          });
@@ -85,7 +75,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => HomeScreen()));
             },
-        )
+        ),
+        title: Text("Profile"),
+        centerTitle: true,
+        actions: [
+          IconButton(icon: Icon(Icons.edit),
+            onPressed: ()
+            {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => EditProfileScreen()));
+            },
+          ),
+        ],
       ),
        body:isLoading?
        Container(
@@ -101,19 +102,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
-                   // Container(
-                   //   height: 200.0,
-                   //     width: 150.0,
-                   //     decoration: BoxDecoration(
-                   //       color: Colors.amber,
-                   //       borderRadius: BorderRadius.all(Radius.circular(25.0))
-                   //     ),
-                   //     child:
-                   //     Image.network(
-                   //       widget.profilePic,
-                   //       height: 150,
-                   //     ),
-                   // ),
+                   Container(
+                     height: 200.0,
+                       width: 150.0,
+                       decoration: BoxDecoration(
+                         color: Colors.amber,
+                         borderRadius: BorderRadius.all(Radius.circular(25.0))
+                       ),
+                       child: ProfilePic != null? Image.network(
+                         ProfilePic,
+                         height: 150,
+                         fit: BoxFit.cover,
+                       ): Center(child: Text("Empty")),
+
+                   ),
                    SizedBox(width: 20.0,),
                    Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              fontWeight: FontWeight.bold,
                            ),
                          ),
-                         Text(PhoneNumber,
+                         Text(PhoneNumber!=null? PhoneNumber: "Empty",
                            style: TextStyle(
                              color: Colors.black45,
                              fontSize: 18.0,
@@ -261,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              fontWeight: FontWeight.bold,
                            ),
                          ),
-                         Text(EmailAddress,
+                         Text(EmailAddress!=null?EmailAddress: "Empty",
                            style: TextStyle(
                              color: Colors.black45,
                              fontSize: 18.0,
@@ -281,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              fontWeight: FontWeight.bold,
                            ),
                          ),
-                         Text(BloodGroup,
+                         Text(BloodGroup!=null?BloodGroup: "Empty",
                            style: TextStyle(
                              color: Colors.black45,
                              fontSize: 18.0,
@@ -342,18 +344,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                  child: Padding(
                    padding: const EdgeInsets.only(top: 25.0),
                    child: ElevatedButton(
-                       onPressed: () async {
+                       onPressed: () {
                          Navigator.push(
                              context, MaterialPageRoute(builder: (context) => EditProfileScreen()
-                         )
-                         );
+                         ));
                        },
                        style: ElevatedButton.styleFrom(
                          primary: Colors.orangeAccent,
                        ),
                        child: Center(
-                         child: Text('Log In',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.0,color: Colors.white),),
-                       )),
+                         child: Text('Edit Profile',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.0,color: Colors.white),),
+                       )
+                   ),
                  ),
                ),
              ],

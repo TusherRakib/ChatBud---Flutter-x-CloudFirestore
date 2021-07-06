@@ -26,13 +26,26 @@ class DatabaseMethods {
     });
   }
 
-  // getUserProfileInfo() async {
-  //   final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  //   Firestore.instance
-  //       .collection("users")
-  //       .document(user.uid)
-  //       .get();
-  // }
+  Future<void> updateProfile(updateMap) async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance.collection("users")
+        .document(firebaseUser.uid)
+        .updateData(updateMap).catchError((e){
+      print(e.toString());
+    });
+    
+    print("updateProfile(updateMap) called");
+  }
+
+  getUserProfileInfo() async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    return Firestore.instance
+        .collection("users")
+        .document(user.uid)
+        .get().catchError((e) {
+      print(e.toString());
+    });
+  }
 
   searchByName(String searchField) {
     return Firestore.instance
@@ -40,6 +53,8 @@ class DatabaseMethods {
         .where('userName', isEqualTo: searchField)
         .getDocuments();
   }
+
+
 
 
   Future<bool> addChatRoom(chatRoom, chatRoomId) {

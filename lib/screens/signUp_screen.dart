@@ -83,7 +83,7 @@ class _SignUpState extends State<SignUp> {
       ):
       SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(15, 100, 15, 10),
+          padding: EdgeInsets.fromLTRB(15, 200, 15, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -140,136 +140,136 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      validator: (val){
-                        return val.isEmpty || val.length < 11 ? "Contact No. is Incorrect" : null;
-                      },
-                      controller: contactNoEditingController,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 2.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                          ),
-                          labelText: 'Contact No.',labelStyle: TextStyle(color: Colors.black45)),
-                    ),
-                    SizedBox(height: 20.0),
-
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          border: Border.all(color: Colors.black45)
-                      ),
-                      width: MediaQuery.of(context).size.width ,
-                      height: MediaQuery.of(context).size.height/15,
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
-                        child: DropdownButtonFormField<String>(
-                          focusColor:Colors.white,
-                          value: _chosenBloodGroup,
-                          elevation: 0,
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor:Colors.black,
-                          items: <String>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-',].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value,style:TextStyle(color:Colors.black),),
-                            );
-                          }).toList(),
-                          hint:Text(
-                            "Blood Group",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _chosenBloodGroup = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          border: Border.all(color: Colors.black45)
-                      ),
-                      width: MediaQuery.of(context).size.width ,
-                      height: MediaQuery.of(context).size.height/15,
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
-                        child: DropdownButtonFormField<String>(
-                          focusColor:Colors.white,
-                          value: _chosenArea,
-                          elevation: 0,
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor:Colors.black,
-                          items: <String>['Shantinagar', 'Khilgaon', 'Jatrabari', 'Bashundhara', 'Gulshan', 'Mirpur', 'Mohammadpur', 'Farmgate',].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value,style:TextStyle(color:Colors.black),),
-                            );
-                          }).toList(),
-                          hint:Text(
-                            "Choose Area",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _chosenArea = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          border: Border.all(color: Colors.black45)
-                      ),
-                      width: MediaQuery.of(context).size.width ,
-                      height: MediaQuery.of(context).size.height/15,
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 10.0,top: 17.0),
-                        child: DropdownButtonFormField<String>(
-                          focusColor:Colors.white,
-                          value: _chosenCity,
-                          elevation: 0,
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor:Colors.black,
-                          items: <String>['Dhaka',].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value,style:TextStyle(color:Colors.black),),
-                            );
-                          }).toList(),
-                          hint:Text(
-                            "Choose City",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _chosenCity = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
+                    // SizedBox(height: 20.0),
+                    // TextFormField(
+                    //   validator: (val){
+                    //     return val.isEmpty || val.length < 11 ? "Contact No. is Incorrect" : null;
+                    //   },
+                    //   controller: contactNoEditingController,
+                    //   decoration: InputDecoration(
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderSide: BorderSide(color: Colors.black45, width: 2.0),
+                    //       ),
+                    //       enabledBorder: OutlineInputBorder(
+                    //         borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                    //       ),
+                    //       labelText: 'Contact No.',labelStyle: TextStyle(color: Colors.black45)),
+                    // ),
+                    // SizedBox(height: 20.0),
+                    //
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    //       border: Border.all(color: Colors.black45)
+                    //   ),
+                    //   width: MediaQuery.of(context).size.width ,
+                    //   height: MediaQuery.of(context).size.height/15,
+                    //   child:  Padding(
+                    //     padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                    //     child: DropdownButtonFormField<String>(
+                    //       focusColor:Colors.white,
+                    //       value: _chosenBloodGroup,
+                    //       elevation: 0,
+                    //       decoration: InputDecoration.collapsed(hintText: ''),
+                    //       style: TextStyle(color: Colors.white),
+                    //       iconEnabledColor:Colors.black,
+                    //       items: <String>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-',].map<DropdownMenuItem<String>>((String value) {
+                    //         return DropdownMenuItem<String>(
+                    //           value: value,
+                    //           child: Text(value,style:TextStyle(color:Colors.black),),
+                    //         );
+                    //       }).toList(),
+                    //       hint:Text(
+                    //         "Blood Group",
+                    //         style: TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 14,
+                    //             fontWeight: FontWeight.w500),
+                    //       ),
+                    //       onChanged: (String value) {
+                    //         setState(() {
+                    //           _chosenBloodGroup = value;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20.0),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    //       border: Border.all(color: Colors.black45)
+                    //   ),
+                    //   width: MediaQuery.of(context).size.width ,
+                    //   height: MediaQuery.of(context).size.height/15,
+                    //   child:  Padding(
+                    //     padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                    //     child: DropdownButtonFormField<String>(
+                    //       focusColor:Colors.white,
+                    //       value: _chosenArea,
+                    //       elevation: 0,
+                    //       decoration: InputDecoration.collapsed(hintText: ''),
+                    //       style: TextStyle(color: Colors.white),
+                    //       iconEnabledColor:Colors.black,
+                    //       items: <String>['Shantinagar', 'Khilgaon', 'Jatrabari', 'Bashundhara', 'Gulshan', 'Mirpur', 'Mohammadpur', 'Farmgate',].map<DropdownMenuItem<String>>((String value) {
+                    //         return DropdownMenuItem<String>(
+                    //           value: value,
+                    //           child: Text(value,style:TextStyle(color:Colors.black),),
+                    //         );
+                    //       }).toList(),
+                    //       hint:Text(
+                    //         "Choose Area",
+                    //         style: TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 14,
+                    //             fontWeight: FontWeight.w500),
+                    //       ),
+                    //       onChanged: (String value) {
+                    //         setState(() {
+                    //           _chosenArea = value;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20.0),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    //       border: Border.all(color: Colors.black45)
+                    //   ),
+                    //   width: MediaQuery.of(context).size.width ,
+                    //   height: MediaQuery.of(context).size.height/15,
+                    //   child:  Padding(
+                    //     padding: const EdgeInsets.only(left: 10.0,top: 17.0),
+                    //     child: DropdownButtonFormField<String>(
+                    //       focusColor:Colors.white,
+                    //       value: _chosenCity,
+                    //       elevation: 0,
+                    //       decoration: InputDecoration.collapsed(hintText: ''),
+                    //       style: TextStyle(color: Colors.white),
+                    //       iconEnabledColor:Colors.black,
+                    //       items: <String>['Dhaka',].map<DropdownMenuItem<String>>((String value) {
+                    //         return DropdownMenuItem<String>(
+                    //           value: value,
+                    //           child: Text(value,style:TextStyle(color:Colors.black),),
+                    //         );
+                    //       }).toList(),
+                    //       hint:Text(
+                    //         "Choose City",
+                    //         style: TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 14,
+                    //             fontWeight: FontWeight.w500),
+                    //       ),
+                    //       onChanged: (String value) {
+                    //         setState(() {
+                    //           _chosenCity = value;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 20.0),
                     TextFormField(
                       validator: (val){
